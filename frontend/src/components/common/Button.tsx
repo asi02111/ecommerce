@@ -1,27 +1,32 @@
-import type { ReactNode, ButtonHTMLAttributes } from 'react'
-import Spinner from './Spinner'
+import { Button as MuiButton, CircularProgress, type ButtonProps as MuiButtonProps } from '@mui/material'
+import type { ReactNode } from 'react'
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success'
-  size?: 'sm' | 'md' | 'lg'
-  loading?: boolean
+// আগের Tailwind Button এর variant নাম গুলো MUI এর variant+color এ map করা —
+// তাই বাকি সব জায়গায় <Button variant="success">, variant="danger" লেখা code
+// একই থাকবে, শুধু ভেতরে MUI render হবে।
+type LegacyVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success'
+
+interface Props extends Omit<MuiButtonProps, 'variant' | 'color' | 'size'> {
+  children:  ReactNode
+  variant?:  LegacyVariant
+  size?:     'sm' | 'md' | 'lg'
+  loading?:  boolean
   fullWidth?: boolean
 }
 
-const variantClass: Record<string, string> = {
-  primary:   'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm',
-  secondary: 'bg-gray-800   hover:bg-gray-900   text-white shadow-sm',
-  outline:   'border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50',
-  ghost:     'text-gray-600 hover:bg-gray-100',
-  danger:    'bg-red-500    hover:bg-red-600    text-white shadow-sm',
-  success:   'bg-green-500  hover:bg-green-600  text-white shadow-sm',
+const variantMap: Record<LegacyVariant, { variant: MuiButtonProps['variant']; color: MuiButtonProps['color'] }> = {
+  primary:   { variant: 'contained', color: 'primary'   },
+  secondary: { variant: 'contained', color: 'secondary' },
+  outline:   { variant: 'outlined', color: 'primary'    },
+  ghost:     { variant: 'text',     color: 'inherit'    },
+  danger:    { variant: 'contained', color: 'error'     },
+  success:   { variant: 'contained', color: 'success'   },
 }
 
-const sizeClass: Record<string, string> = {
-  sm: 'px-3 py-1.5 text-xs rounded-lg',
-  md: 'px-5 py-2.5 text-sm rounded-xl',
-  lg: 'px-7 py-3.5 text-base rounded-xl',
+const sizeMap: Record<'sm' | 'md' | 'lg', MuiButtonProps['size']> = {
+  sm: 'small',
+  md: 'medium',
+  lg: 'large',
 }
 
 const Button = ({
@@ -31,24 +36,22 @@ const Button = ({
   loading = false,
   fullWidth = false,
   disabled,
-  className = '',
   ...rest
 }: Props) => {
+  const { variant: muiVariant, color } = variantMap[variant]
+
   return (
-    <button
+    <MuiButton
+      variant={muiVariant}
+      color={color}
+      size={sizeMap[size]}
+      fullWidth={fullWidth}
       disabled={disabled || loading}
-      className={[
-        'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed',
-        variantClass[variant],
-        sizeClass[size],
-        fullWidth ? 'w-full' : '',
-        className,
-      ].join(' ')}
+      startIcon={loading ? <CircularProgress size={16} color="inherit" /> : undefined}
       {...rest}
     >
-      {loading && <Spinner size="sm" color="white" />}
       {children}
-    </button>
+    </MuiButton>
   )
 }
 

@@ -1,61 +1,39 @@
-import { useEffect } from 'react'
+import { Snackbar, Alert } from '@mui/material'
 
 export interface ToastData {
-  id: string
+  id:      string
   message: string
-  type: 'success' | 'error' | 'warning' | 'info'
+  type:    'success' | 'error' | 'warning' | 'info'
 }
 
 interface Props {
-  toasts: ToastData[]
+  toasts:   ToastData[]
   onRemove: (id: string) => void
 }
 
-const typeClass: Record<string, string> = {
-  success: 'bg-green-500',
-  error:   'bg-red-500',
-  warning: 'bg-orange-500',
-  info:    'bg-indigo-600',
-}
-
-const typeIcon: Record<string, string> = {
-  success: '✅',
-  error:   '❌',
-  warning: '⚠️',
-  info:    'ℹ️',
-}
-
-const ToastItem = ({ toast, onRemove }: { toast: ToastData; onRemove: (id: string) => void }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => onRemove(toast.id), 3000)
-    return () => clearTimeout(timer)
-  }, [toast.id, onRemove])
-
-  return (
-    <div
-      className={[
-        'flex items-center gap-3 text-white px-4 py-3 rounded-xl shadow-lg text-sm font-medium min-w-64 animate-fade-in',
-        typeClass[toast.type],
-      ].join(' ')}
-    >
-      <span>{typeIcon[toast.type]}</span>
-      <span className="flex-1">{toast.message}</span>
-      <button onClick={() => onRemove(toast.id)} className="opacity-70 hover:opacity-100">✕</button>
-    </div>
-  )
-}
-
-// Toast container — App.tsx এ রাখতে হবে
-const Toast = ({ toasts, onRemove }: Props) => {
-  if (toasts.length === 0) return null
-
-  return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2">
-      {toasts.map((toast) => (
-        <ToastItem key={toast.id} toast={toast} onRemove={onRemove} />
-      ))}
-    </div>
-  )
-}
+// একসাথে stack করে দেখানো — নিচ থেকে উপরে সাজানো
+const Toast = ({ toasts, onRemove }: Props) => (
+  <>
+    {toasts.map((toast, i) => (
+      <Snackbar
+        key={toast.id}
+        open
+        autoHideDuration={3000}
+        onClose={() => onRemove(toast.id)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        sx={{ bottom: `${16 + i * 60}px !important` }}
+      >
+        <Alert
+          onClose={() => onRemove(toast.id)}
+          severity={toast.type}
+          variant="filled"
+          sx={{ borderRadius: 2.5, minWidth: 260, fontWeight: 500 }}
+        >
+          {toast.message}
+        </Alert>
+      </Snackbar>
+    ))}
+  </>
+)
 
 export default Toast

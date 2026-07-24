@@ -3,6 +3,7 @@ import { CartProvider }     from './context/CartContext'
 import { AuthProvider }     from './context/AuthContext'
 import { WishlistProvider } from './context/WishlistContext'
 import { ToastProvider }    from './context/ToastContext'
+import { AppThemeProvider } from './theme/ThemeContext'
 
 import Navbar  from './components/layout/Navbar'
 import Footer  from './components/layout/Footer'
@@ -14,12 +15,13 @@ import CartPage          from './pages/CartPage'
 import CheckoutPage      from './pages/CheckoutPage'
 import AuthPage          from './pages/AuthPage'
 import OrdersPage        from './pages/OrdersPage'
-import ProfilePage       from './pages/ProfilePage'
 import WishlistPage      from './pages/WishlistPage'
+import ProfilePage from './pages/ProfilePage'
 
 function App() {
   return (
     // সব Provider এ wrap করা — যেকোনো component থেকে এখন context ব্যবহার করা যাবে
+    <AppThemeProvider>
     <AuthProvider>
       <CartProvider>
         <WishlistProvider>
@@ -48,6 +50,7 @@ function App() {
         </WishlistProvider>
       </CartProvider>
     </AuthProvider>
+    </AppThemeProvider>
   )
 }
 
