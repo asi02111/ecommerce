@@ -1,42 +1,38 @@
+import { Chip } from '@mui/material'
 import type { ReactNode } from 'react'
+
+type LegacyVariant = 'indigo' | 'red' | 'green' | 'orange' | 'pink' | 'gray' | 'yellow'
 
 interface Props {
   children: ReactNode
-  variant?: 'indigo' | 'red' | 'green' | 'orange' | 'pink' | 'gray' | 'yellow'
-  size?: 'sm' | 'md'
-  dot?: boolean
+  variant?: LegacyVariant
+  size?:    'sm' | 'md'
+  dot?:     boolean
 }
 
-const variantClass: Record<string, string> = {
-  indigo: 'bg-indigo-100 text-indigo-700',
-  red:    'bg-red-100    text-red-700',
-  green:  'bg-green-100  text-green-700',
-  orange: 'bg-orange-100 text-orange-700',
-  pink:   'bg-pink-100   text-pink-600',
-  gray:   'bg-gray-100   text-gray-600',
-  yellow: 'bg-yellow-100 text-yellow-700',
+// Legacy color নাম → MUI Chip color/style। theme পাল্টালেও 'indigo' মানেই primary color থাকবে।
+const variantMap: Record<LegacyVariant, { color: 'primary' | 'error' | 'success' | 'warning' | 'secondary' | 'default'; sx?: object }> = {
+  indigo: { color: 'primary'   },
+  red:    { color: 'error'     },
+  green:  { color: 'success'   },
+  orange: { color: 'warning'   },
+  pink:   { color: 'secondary' },
+  gray:   { color: 'default'   },
+  yellow: { color: 'warning', sx: { bgcolor: '#FEF3C7', color: '#92400E' } },
 }
 
-const dotClass: Record<string, string> = {
-  indigo: 'bg-indigo-500',
-  red:    'bg-red-500',
-  green:  'bg-green-500',
-  orange: 'bg-orange-500',
-  pink:   'bg-pink-500',
-  gray:   'bg-gray-400',
-  yellow: 'bg-yellow-500',
-}
+const Badge = ({ children, variant = 'indigo', size = 'md', dot = false }: Props) => {
+  const { color, sx } = variantMap[variant]
 
-const sizeClass = {
-  sm: 'text-xs px-2 py-0.5 rounded-md',
-  md: 'text-xs px-2.5 py-1 rounded-lg',
+  return (
+    <Chip
+      label={children}
+      color={color}
+      size={size === 'sm' ? 'small' : 'medium'}
+      icon={dot ? <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor', marginLeft: 6 }} /> : undefined}
+      sx={{ fontWeight: 600, ...sx }}
+    />
+  )
 }
-
-const Badge = ({ children, variant = 'indigo', size = 'md', dot = false }: Props) => (
-  <span className={['inline-flex items-center gap-1.5 font-semibold', variantClass[variant], sizeClass[size]].join(' ')}>
-    {dot && <span className={['w-1.5 h-1.5 rounded-full', dotClass[variant]].join(' ')} />}
-    {children}
-  </span>
-)
 
 export default Badge

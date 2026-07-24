@@ -1,30 +1,30 @@
+import { Paper, type PaperProps } from '@mui/material'
 import type { ReactNode } from 'react'
 
-interface Props {
+interface Props extends Omit<PaperProps, 'variant'> {
   children: ReactNode
-  className?: string
   padding?: 'sm' | 'md' | 'lg' | 'none'
-  hover?: boolean
+  hover?:   boolean
 }
 
-const paddingClass = {
-  none: '',
-  sm:   'p-3',
-  md:   'p-5',
-  lg:   'p-8',
-}
+const paddingMap = { none: 0, sm: 1.5, md: 2.5, lg: 4 }
 
-const Card = ({ children, className = '', padding = 'md', hover = false }: Props) => (
-  <div
-    className={[
-      'bg-white rounded-2xl border border-gray-100 shadow-sm',
-      paddingClass[padding],
-      hover ? 'hover:shadow-md transition-shadow duration-300' : '',
-      className,
-    ].join(' ')}
+const Card = ({ children, padding = 'md', hover = false, sx, ...rest }: Props) => (
+  <Paper
+    elevation={0}
+    sx={{
+      border: '1px solid',
+      borderColor: 'divider',
+      borderRadius: 3,
+      p: paddingMap[padding],
+      transition: hover ? 'box-shadow .2s, transform .2s' : undefined,
+      '&:hover': hover ? { boxShadow: '0 8px 24px rgba(0,0,0,.08)', transform: 'translateY(-2px)' } : undefined,
+      ...sx,
+    }}
+    {...rest}
   >
     {children}
-  </div>
+  </Paper>
 )
 
 export default Card

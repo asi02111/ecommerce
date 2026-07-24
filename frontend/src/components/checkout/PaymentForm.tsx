@@ -11,10 +11,10 @@ interface Props {
 }
 
 const paymentOptions = [
-  { id: 'bkash', label: 'bKash',            icon: '📱', color: 'text-pink-600'   },
-  { id: 'nagad', label: 'Nagad',            icon: '📱', color: 'text-orange-500' },
-  { id: 'card',  label: 'Card',             icon: '💳', color: 'text-blue-600'   },
-  { id: 'cod',   label: 'Cash on Delivery', icon: '💵', color: 'text-green-600'  },
+  { id: 'bkash', label: 'bKash', icon: '📱', color: 'text-pink-600' },
+  { id: 'nagad', label: 'Nagad', icon: '📱', color: 'text-orange-500' },
+  { id: 'card', label: 'Card', icon: '💳', color: 'text-blue-600' },
+  { id: 'cod', label: 'Cash on Delivery', icon: '💵', color: 'text-green-600' },
 ] as const
 
 const PaymentForm = ({ paymentMethod, total, onMethodChange, onNext, onBack }: Props) => {
@@ -30,11 +30,10 @@ const PaymentForm = ({ paymentMethod, total, onMethodChange, onNext, onBack }: P
           <button
             key={option.id}
             onClick={() => onMethodChange(option.id)}
-            className={`p-3 rounded-xl border-2 flex flex-col items-center gap-1 transition-all ${
-              paymentMethod === option.id
+            className={`p-3 rounded-xl border-2 flex flex-col items-center gap-1 transition-all ${paymentMethod === option.id
                 ? 'border-indigo-500 bg-indigo-50'
                 : 'border-gray-200 hover:border-gray-300'
-            }`}
+              }`}
           >
             <span className="text-2xl">{option.icon}</span>
             <span className={`text-xs font-semibold ${option.color}`}>{option.label}</span>
@@ -65,7 +64,11 @@ const PaymentForm = ({ paymentMethod, total, onMethodChange, onNext, onBack }: P
             value={cardInfo.number}
             onChange={(e) => setCardInfo({ ...cardInfo, number: e.target.value })}
             placeholder="1234 5678 9012 3456"
-            maxLength={19}
+            slotProps={{
+              htmlInput: {
+                maxLength: 19,
+              },
+            }}
           />
           <Input
             label="Cardholder Name"
@@ -79,7 +82,11 @@ const PaymentForm = ({ paymentMethod, total, onMethodChange, onNext, onBack }: P
               value={cardInfo.expiry}
               onChange={(e) => setCardInfo({ ...cardInfo, expiry: e.target.value })}
               placeholder="MM / YY"
-              maxLength={7}
+              slotProps={{
+                htmlInput: {
+                  maxLength: 7,
+                },
+              }}
             />
             <Input
               label="CVV"
@@ -87,7 +94,11 @@ const PaymentForm = ({ paymentMethod, total, onMethodChange, onNext, onBack }: P
               value={cardInfo.cvv}
               onChange={(e) => setCardInfo({ ...cardInfo, cvv: e.target.value })}
               placeholder="•••"
-              maxLength={4}
+              slotProps={{
+                htmlInput: {
+                  maxLength: 4,
+                },
+              }}
             />
           </div>
         </div>

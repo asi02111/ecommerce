@@ -1,19 +1,24 @@
+import { Box, Typography } from '@mui/material'
 import type { ReactNode } from 'react'
 
 interface Props {
-  icon?: string
-  title: string
+  icon?:        string
+  title:        string
   description?: string
-  action?: ReactNode
+  action?:      ReactNode
 }
 
 const EmptyState = ({ icon = '📭', title, description, action }: Props) => (
-  <div className="flex flex-col items-center justify-center py-20 text-center px-4">
-    <p className="text-6xl mb-4">{icon}</p>
-    <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
-    {description && <p className="text-sm text-gray-500 mb-6 max-w-xs">{description}</p>}
-    {action && <div>{action}</div>}
-  </div>
+  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: 10, px: 2, textAlign: 'center' }}>
+    <Typography sx={{ fontSize: 56, mb: 2 }}>{icon}</Typography>
+    <Typography sx={{ fontWeight: 700, fontSize: 18, color: 'text.primary', mb: 1 }}>{title}</Typography>
+    {description && (
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 3, maxWidth: 320 }}>
+        {description}
+      </Typography>
+    )}
+    {action}
+  </Box>
 )
 
 export default EmptyState

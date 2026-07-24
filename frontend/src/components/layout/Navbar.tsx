@@ -1,41 +1,42 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import type { Category, NavLink } from '../../types'
-import { useCart }     from '../../hooks/useStore'
-import { useAuth }     from '../../hooks/useStore'
+import { useCart } from '../../hooks/useStore'
+import { useAuth } from '../../hooks/useStore'
 import { useWishlist } from '../../hooks/useStore'
+import ThemeSwitcherDialog from '../common/ThemeSwitcherDialog'
 
 const categories: Category[] = [
   {
     label: 'Men', href: '/men',
     subcategories: [
       { label: 'T-Shirts', href: '/men/tshirts' },
-      { label: 'Shirts',   href: '/men/shirts'   },
-      { label: 'Pants',    href: '/men/pants'     },
-      { label: 'Shoes',    href: '/men/shoes'     },
-      { label: 'Watches',  href: '/men/watches'   },
-      { label: 'Bags',     href: '/men/bags'      },
+      { label: 'Shirts', href: '/men/shirts' },
+      { label: 'Pants', href: '/men/pants' },
+      { label: 'Shoes', href: '/men/shoes' },
+      { label: 'Watches', href: '/men/watches' },
+      { label: 'Bags', href: '/men/bags' },
     ],
   },
   {
     label: 'Women', href: '/women',
     subcategories: [
-      { label: 'Dresses',  href: '/women/dresses'  },
-      { label: 'Tops',     href: '/women/tops'      },
-      { label: 'Saree',    href: '/women/saree'     },
-      { label: 'Handbags', href: '/women/handbags'  },
-      { label: 'Shoes',    href: '/women/shoes'     },
-      { label: 'Jewelry',  href: '/women/jewelry'   },
+      { label: 'Dresses', href: '/women/dresses' },
+      { label: 'Tops', href: '/women/tops' },
+      { label: 'Saree', href: '/women/saree' },
+      { label: 'Handbags', href: '/women/handbags' },
+      { label: 'Shoes', href: '/women/shoes' },
+      { label: 'Jewelry', href: '/women/jewelry' },
     ],
   },
   {
     label: 'Electronics', href: '/electronics',
     subcategories: [
       { label: 'Smartphones', href: '/electronics/smartphones' },
-      { label: 'Laptops',     href: '/electronics/laptops'     },
-      { label: 'Headphones',  href: '/electronics/headphones'  },
-      { label: 'Cameras',     href: '/electronics/cameras'     },
-      { label: 'Smart Watch', href: '/electronics/smartwatch'  },
+      { label: 'Laptops', href: '/electronics/laptops' },
+      { label: 'Headphones', href: '/electronics/headphones' },
+      { label: 'Cameras', href: '/electronics/cameras' },
+      { label: 'Smart Watch', href: '/electronics/smartwatch' },
       { label: 'Accessories', href: '/electronics/accessories' },
     ],
   },
@@ -43,47 +44,49 @@ const categories: Category[] = [
     label: 'Home & Living', href: '/home',
     subcategories: [
       { label: 'Furniture', href: '/home/furniture' },
-      { label: 'Kitchen',   href: '/home/kitchen'   },
-      { label: 'Bedding',   href: '/home/bedding'   },
-      { label: 'Lighting',  href: '/home/lighting'  },
-      { label: 'Decor',     href: '/home/decor'     },
-      { label: 'Storage',   href: '/home/storage'   },
+      { label: 'Kitchen', href: '/home/kitchen' },
+      { label: 'Bedding', href: '/home/bedding' },
+      { label: 'Lighting', href: '/home/lighting' },
+      { label: 'Decor', href: '/home/decor' },
+      { label: 'Storage', href: '/home/storage' },
     ],
   },
   {
     label: 'Sports', href: '/sports',
     subcategories: [
-      { label: 'Cricket',    href: '/sports/cricket'    },
-      { label: 'Football',   href: '/sports/football'   },
-      { label: 'Gym',        href: '/sports/gym'        },
-      { label: 'Cycling',    href: '/sports/cycling'    },
-      { label: 'Outdoor',    href: '/sports/outdoor'    },
+      { label: 'Cricket', href: '/sports/cricket' },
+      { label: 'Football', href: '/sports/football' },
+      { label: 'Gym', href: '/sports/gym' },
+      { label: 'Cycling', href: '/sports/cycling' },
+      { label: 'Outdoor', href: '/sports/outdoor' },
       { label: 'Sportswear', href: '/sports/sportswear' },
     ],
   },
 ]
 
 const topLinks: NavLink[] = [
-  { label: 'Track Order',   href: '/track-order' },
-  { label: 'Sell on ShopBD', href: '/sell'        },
-  { label: 'Help',           href: '/help'        },
+  { label: 'Track Order', href: '/track-order' },
+  { label: 'Sell on ShopBD', href: '/sell' },
+  { label: 'Help', href: '/help' },
 ]
 
 const Navbar = () => {
-  const { cartCount }     = useCart()
+  const { cartCount } = useCart()
   const { wishlistCount } = useWishlist()
   const { user, isLoggedIn, logout } = useAuth()
   const navigate = useNavigate()
 
-  const [menuOpen,       setMenuOpen]       = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
-  const [searchQuery,    setSearchQuery]    = useState('')
-  const [searchOpen,     setSearchOpen]     = useState(false)
-  const [accountOpen,    setAccountOpen]    = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [accountOpen, setAccountOpen] = useState(false)
 
-  const megaMenuRef  = useRef<HTMLDivElement>(null)
-  const accountRef   = useRef<HTMLDivElement>(null)
-  const timeoutRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const megaMenuRef = useRef<HTMLDivElement>(null)
+  const accountRef = useRef<HTMLDivElement>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const [themeOpen, setThemeOpen] = useState(false)
 
   const handleMouseEnter = (label: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -168,6 +171,7 @@ const Navbar = () => {
                 🔍
               </button>
             </div>
+
           </div>
 
           {/* Right Icons */}
@@ -181,12 +185,19 @@ const Navbar = () => {
               <span className="text-xl">🔍</span>
             </button>
 
+            <button onClick={() => setThemeOpen(true)} className="relative p-2 text-gray-600 hover:text-indigo-600 flex items-center gap-1 hover:bg-indigo-50 rounded-lg transition-colors">
+              <span className="text-xl">🎨</span>
+              <span className="hidden sm:block text-sm font-medium text-gray-700">Theme</span>
+            </button>
+            <ThemeSwitcherDialog open={themeOpen} onClose={() => setThemeOpen(false)} />
+
             {/* Wishlist */}
             <Link
               to="/wishlist"
               className="relative p-2 text-gray-600 hover:text-pink-500 hover:bg-pink-50 rounded-lg transition-colors hidden sm:flex items-center"
             >
               <span className="text-xl">🤍</span>
+              <span className="hidden sm:block text-sm font-medium text-gray-700">Wishlist</span>
               {wishlistCount > 0 && (
                 <span className="absolute top-0.5 right-0.5 bg-pink-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center leading-none">
                   {wishlistCount}
@@ -231,8 +242,8 @@ const Navbar = () => {
                   <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
                     {[
                       { label: '👤 My Profile', href: '/profile' },
-                      { label: '📦 My Orders',  href: '/orders'  },
-                      { label: '🤍 Wishlist',   href: '/wishlist' },
+                      { label: '📦 My Orders', href: '/orders' },
+                      { label: '🤍 Wishlist', href: '/wishlist' },
                     ].map((item) => (
                       <Link
                         key={item.href}
@@ -316,11 +327,10 @@ const Navbar = () => {
               <li key={cat.label} className="relative" onMouseEnter={() => handleMouseEnter(cat.label)}>
                 <Link
                   to={cat.href}
-                  className={`flex items-center gap-1 text-sm font-medium px-4 py-3 transition-colors border-b-2 ${
-                    activeCategory === cat.label
-                      ? 'text-indigo-600 border-indigo-600'
-                      : 'text-gray-700 hover:text-indigo-600 border-transparent'
-                  }`}
+                  className={`flex items-center gap-1 text-sm font-medium px-4 py-3 transition-colors border-b-2 ${activeCategory === cat.label
+                    ? 'text-indigo-600 border-indigo-600'
+                    : 'text-gray-700 hover:text-indigo-600 border-transparent'
+                    }`}
                 >
                   {cat.label}
                   <span className="text-xs opacity-60">▾</span>
@@ -415,11 +425,11 @@ const Navbar = () => {
           ))}
 
           <div className="p-4 flex flex-col gap-3">
-            <Link to="/deals"       className="text-sm font-semibold text-red-500">🔥 Today's Deals</Link>
+            <Link to="/deals" className="text-sm font-semibold text-red-500">🔥 Today's Deals</Link>
             <Link to="/new-arrivals" className="text-sm text-gray-700">✨ New Arrivals</Link>
-            <Link to="/orders"       className="text-sm text-gray-700">📦 My Orders</Link>
-            <Link to="/wishlist"     className="text-sm text-gray-700">🤍 Wishlist</Link>
-            <Link to="/help"         className="text-sm text-gray-700">❓ Help</Link>
+            <Link to="/orders" className="text-sm text-gray-700">📦 My Orders</Link>
+            <Link to="/wishlist" className="text-sm text-gray-700">🤍 Wishlist</Link>
+            <Link to="/help" className="text-sm text-gray-700">❓ Help</Link>
           </div>
         </div>
       )}
