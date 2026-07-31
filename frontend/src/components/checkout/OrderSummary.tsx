@@ -1,72 +1,65 @@
-import { Card } from '../../components/common'
+import { Paper, Typography, Box, Divider } from '@mui/material'
 import type { CartItem } from '../../types/checkout'
 
 interface Props {
   cartItems: CartItem[]
-  subtotal: number
-  shipping: number
-  total: number
+  subtotal:  number
+  shipping:  number
+  total:     number
 }
 
-const OrderSummary = ({ cartItems, subtotal, shipping, total }: Props) => {
-  return (
-    <Card padding="md" className="sticky top-24">
-      <h2 className="text-sm font-extrabold text-gray-900 mb-4">Order Summary</h2>
+const OrderSummary = ({ cartItems, subtotal, shipping, total }: Props) => (
+  <Paper elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 3, p: 2.5, position: 'sticky', top: 96 }}>
+    <Typography sx={{ fontWeight: 800, fontSize: 15, mb: 2 }}>Order Summary</Typography>
 
-      <div className="space-y-3 mb-4">
-        {cartItems.map((item, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <div className="relative">
-              <img
-                src={item.product.image}
-                alt={item.product.name}
-                className="w-10 h-10 rounded-lg object-cover bg-gray-50"
-              />
-              <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center leading-none">
-                {item.quantity}
-              </span>
-            </div>
-            <p className="flex-1 text-xs text-gray-700 line-clamp-1">{item.product.name}</p>
-            <p className="text-xs font-bold text-gray-900">
-              ৳{(item.product.price * item.quantity).toLocaleString()}
-            </p>
-          </div>
-        ))}
-      </div>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2, mb: 2 }}>
+      {cartItems.map((item, i) => (
+        <Box key={i} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ position: 'relative' }}>
+            <Box component="img" src={item.product.image} alt="" sx={{ width: 38, height: 38, borderRadius: 1.5, objectFit: 'cover', bgcolor: 'grey.100' }} />
+            <Box sx={{ position: 'absolute', top: -6, right: -6, width: 16, height: 16, borderRadius: '50%', bgcolor: 'primary.main', color: '#fff', fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {item.quantity}
+            </Box>
+          </Box>
+          <Typography sx={{ flex: 1, fontSize: 12, color: 'text.secondary' }} noWrap>{item.product.name}</Typography>
+          <Typography sx={{ fontSize: 12, fontWeight: 700 }}>৳{(item.product.price * item.quantity).toLocaleString()}</Typography>
+        </Box>
+      ))}
+    </Box>
 
-      <hr className="border-gray-100 mb-3" />
+    <Divider sx={{ mb: 1.5 }} />
 
-      <div className="space-y-2 text-sm">
-        <div className="flex justify-between text-gray-500">
-          <span>Subtotal</span>
-          <span className="font-medium text-gray-800">৳{subtotal.toLocaleString()}</span>
-        </div>
-        <div className="flex justify-between text-gray-500">
-          <span>Shipping</span>
-          <span className={`font-medium ${shipping === 0 ? 'text-green-600' : 'text-gray-800'}`}>
-            {shipping === 0 ? 'FREE' : `৳${shipping}`}
-          </span>
-        </div>
-        <hr className="border-gray-100" />
-        <div className="flex justify-between font-extrabold text-gray-900">
-          <span>Total</span>
-          <span>৳{total.toLocaleString()}</span>
-        </div>
-      </div>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Typography variant="body2" color="text.secondary">Subtotal</Typography>
+        <Typography variant="body2" sx={{ fontWeight: 600 }}>৳{subtotal.toLocaleString()}</Typography>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Typography variant="body2" color="text.secondary">Shipping</Typography>
+        <Typography variant="body2" sx={{ fontWeight: 600, color: shipping === 0 ? 'success.main' : 'text.primary' }}>
+          {shipping === 0 ? 'FREE' : `৳${shipping}`}
+        </Typography>
+      </Box>
+      <Divider />
+      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Typography sx={{ fontWeight: 800 }}>Total</Typography>
+        <Typography sx={{ fontWeight: 800 }}>৳{total.toLocaleString()}</Typography>
+      </Box>
+    </Box>
 
-      <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
-        {[
-          { icon: '🔒', text: 'Secure checkout' },
-          { icon: '🔄', text: '7-day easy returns' },
-          { icon: '🚚', text: 'Fast delivery' },
-        ].map((b, i) => (
-          <div key={i} className="flex items-center gap-2 text-xs text-gray-400">
-            <span>{b.icon}</span><span>{b.text}</span>
-          </div>
-        ))}
-      </div>
-    </Card>
-  )
-}
+    <Box sx={{ mt: 2.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
+      {[
+        { icon: '🔒', text: 'Secure checkout' },
+        { icon: '🔄', text: '7-day easy returns' },
+        { icon: '🚚', text: 'Fast delivery' },
+      ].map((b, i) => (
+        <Box key={i} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+          <Typography sx={{ fontSize: 13 }}>{b.icon}</Typography>
+          <Typography variant="caption" color="text.disabled">{b.text}</Typography>
+        </Box>
+      ))}
+    </Box>
+  </Paper>
+)
 
 export default OrderSummary
