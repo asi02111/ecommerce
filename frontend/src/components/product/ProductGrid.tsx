@@ -1,6 +1,10 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Box, Container, Typography, Grid } from '@mui/material'
 import { products } from '../../data/products'
 import ProductCard from './ProductCard'
+import CategoryFilterTabs from './CategoryFilterTabs'
+import { EmptyState } from '../common'
 
 const categories = ['All', 'Men', 'Women', 'Electronics', 'Sports', 'Home & Living']
 
@@ -12,51 +16,40 @@ const ProductGrid = () => {
     : products.filter((p) => p.category === activeCategory)
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8">
+    <Box component="section" sx={{ py: 3 }}>
+      <Container maxWidth="xl">
 
-      {/* Section Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-2xl font-extrabold text-gray-900">Featured Products</h2>
-          <p className="text-gray-500 text-sm mt-1">Handpicked just for you</p>
-        </div>
-        <a href="/products" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">
-          View All →
-        </a>
-      </div>
+        {/* Header */}
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+          <Box>
+            <Typography sx={{ fontSize: 22, fontWeight: 800, color: 'text.primary' }}>
+              Featured Products
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.3 }}>
+              Handpicked just for you
+            </Typography>
+          </Box>
+          <Typography component={Link} to="/products" sx={{ fontSize: 13.5, fontWeight: 700, color: 'primary.main', textDecoration: 'none' }}>
+            View All →
+          </Typography>
+        </Box>
 
-      {/* Category Filter Tabs */}
-      <div className="flex gap-2 flex-wrap mb-6">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-              activeCategory === cat
-                ? 'bg-indigo-600 text-white shadow-md'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+        <CategoryFilterTabs categories={categories} active={activeCategory} onChange={setActiveCategory} />
 
-      {/* Product Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filtered.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+        {/* Grid */}
+        <Grid container spacing={2}>
+          {filtered.map((product) => (
+            <Grid size={{ xs: 6, sm: 4, md: 3 }} key={product.id}>
+              <ProductCard product={product} />
+            </Grid>
+          ))}
+        </Grid>
 
-      {/* Empty State */}
-      {filtered.length === 0 && (
-        <div className="text-center py-20 text-gray-400">
-          <p className="text-4xl mb-3">🛍️</p>
-          <p className="font-medium">No products found</p>
-        </div>
-      )}
-    </section>
+        {filtered.length === 0 && (
+          <EmptyState icon="🛍️" title="No products found" />
+        )}
+      </Container>
+    </Box>
   )
 }
 

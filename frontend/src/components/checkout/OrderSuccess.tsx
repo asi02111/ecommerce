@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Button, Card } from '../../components/common'
+import { Box, Paper, Typography } from '@mui/material'
+import { Button } from '../common'
 import type { Address, PaymentMethod } from '../../types/checkout'
 
 interface Props {
@@ -10,54 +11,49 @@ interface Props {
 }
 
 const paymentLabel: Record<PaymentMethod, string> = {
-  bkash: 'bKash',
-  nagad: 'Nagad',
-  card:  'Credit/Debit Card',
-  cod:   'Cash on Delivery',
+  bkash: 'bKash', nagad: 'Nagad', card: 'Credit/Debit Card', cod: 'Cash on Delivery',
 }
 
-const OrderSuccess = ({ address, paymentMethod, total, orderNumber }: Props) => {
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <Card padding="lg" className="max-w-md w-full text-center">
+const OrderSuccess = ({ address, paymentMethod, total, orderNumber }: Props) => (
+  <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', display: 'flex', alignItems: 'center', justifyContent: 'center', px: 2 }}>
+    <Paper elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 4, p: 5, maxWidth: 420, width: '100%', textAlign: 'center' }}>
 
-        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
-          <span className="text-4xl">✅</span>
-        </div>
+      <Box sx={{ width: 80, height: 80, borderRadius: '50%', bgcolor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 2.5 }}>
+        <Typography sx={{ fontSize: 40 }}>✅</Typography>
+      </Box>
 
-        <h2 className="text-2xl font-extrabold text-gray-900 mb-2">Order Placed!</h2>
-        <p className="text-gray-500 text-sm mb-1">
-          Thank you, <span className="font-semibold text-gray-800">{address.fullName}</span>!
-        </p>
-        <p className="text-gray-500 text-sm mb-6">
-          Your order <span className="font-mono font-bold text-indigo-600">#{orderNumber}</span> has been placed successfully.
-        </p>
+      <Typography sx={{ fontWeight: 800, fontSize: 22, mb: 1 }}>Order Placed!</Typography>
+      <Typography variant="body2" color="text.secondary">
+        Thank you, <b>{address.fullName}</b>!
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+        Your order <Box component="span" sx={{ fontFamily: 'monospace', fontWeight: 700, color: 'primary.main' }}>#{orderNumber}</Box> has been placed successfully.
+      </Typography>
 
-        <Card padding="sm" className="text-left mb-6 space-y-2">
-          {[
-            { label: 'Order ID',  value: `#${orderNumber}` },
-            { label: 'Total',     value: `৳${total.toLocaleString()}` },
-            { label: 'Payment',   value: paymentLabel[paymentMethod] },
-            { label: 'Delivery',  value: '3–5 business days' },
-          ].map((row, i) => (
-            <div key={i} className="flex justify-between text-sm">
-              <span className="text-gray-500">{row.label}</span>
-              <span className="font-semibold text-gray-800">{row.value}</span>
-            </div>
-          ))}
-        </Card>
+      <Box sx={{ bgcolor: 'grey.50', borderRadius: 2.5, p: 2, textAlign: 'left', mb: 3, display: 'flex', flexDirection: 'column', gap: 1 }}>
+        {[
+          { label: 'Order ID', value: `#${orderNumber}` },
+          { label: 'Total',    value: `৳${total.toLocaleString()}` },
+          { label: 'Payment',  value: paymentLabel[paymentMethod] },
+          { label: 'Delivery', value: '3–5 business days' },
+        ].map((row, i) => (
+          <Box key={i} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', fontSize: 13 }}>
+            <Typography variant="body2" color="text.secondary">{row.label}</Typography>
+            <Typography variant="body2" sx={{ fontWeight: 700 }}>{row.value}</Typography>
+          </Box>
+        ))}
+      </Box>
 
-        <div className="flex gap-3">
-          <Link to="/" className="flex-1">
-            <Button fullWidth variant="outline">Continue Shopping</Button>
-          </Link>
-          <Link to="/orders" className="flex-1">
-            <Button fullWidth>Track Order</Button>
-          </Link>
-        </div>
-      </Card>
-    </div>
-  )
-}
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1.5 }}>
+        <Link to="/" style={{ flex: 1, textDecoration: 'none' }}>
+          <Button fullWidth variant="outline">Continue Shopping</Button>
+        </Link>
+        <Link to="/orders" style={{ flex: 1, textDecoration: 'none' }}>
+          <Button fullWidth>Track Order</Button>
+        </Link>
+      </Box>
+    </Paper>
+  </Box>
+)
 
 export default OrderSuccess
