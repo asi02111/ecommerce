@@ -1,55 +1,60 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { CartProvider }     from './context/CartContext'
-import { AuthProvider }     from './context/AuthContext'
+import { CartProvider } from './context/CartContext'
+import { AuthProvider } from './context/AuthContext'
 import { WishlistProvider } from './context/WishlistContext'
-import { ToastProvider }    from './context/ToastContext'
+import { ToastProvider } from './context/ToastContext'
 import { AppThemeProvider } from './theme/ThemeContext'
 
-import Navbar  from './components/layout/Navbar'
-import Footer  from './components/layout/Footer'
+import Navbar from './components/layout/Navbar'
+import Footer from './components/layout/Footer'
 
-import HomePage          from './pages/HomePage'
-import ProductsPage      from './pages/ProductsPage'
-import ProductDetailPage from './pages/ProductDetailPage'
-import CartPage          from './pages/CartPage'
-import CheckoutPage      from './pages/CheckoutPage'
-import AuthPage          from './pages/AuthPage'
-import OrdersPage        from './pages/OrdersPage'
-import WishlistPage      from './pages/WishlistPage'
+import HomePage from './pages/HomePage'
+import ProductsPage from './pages/ProductsPage'
+import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/CheckoutPage'
+import AuthPage from './pages/AuthPage'
+import OrdersPage from './pages/OrdersPage'
+import WishlistPage from './pages/WishlistPage'
 import ProfilePage from './pages/ProfilePage'
+import ProductDetailPage from './pages/ProductDetailPage'
 
 function App() {
   return (
     // সব Provider এ wrap করা — যেকোনো component থেকে এখন context ব্যবহার করা যাবে
     <AppThemeProvider>
-    <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <ToastProvider>
-            <BrowserRouter>
-              <div className="min-h-screen bg-gray-50 flex flex-col">
-                <Navbar />
-                <main className="flex-1">
-                  <Routes>
-                    <Route path="/"            element={<HomePage />} />
-                    <Route path="/products"    element={<ProductsPage />} />
-                    <Route path="/product/:id" element={<ProductDetailPage />} />
-                    <Route path="/cart"        element={<CartPage />} />
-                    <Route path="/checkout"    element={<CheckoutPage />} />
-                    <Route path="/login"       element={<AuthPage />} />
-                    <Route path="/register"    element={<AuthPage />} />
-                    <Route path="/orders"      element={<OrdersPage />} />
-                    <Route path="/profile"     element={<ProfilePage />} />
-                    <Route path="/wishlist"    element={<WishlistPage />} />
-                  </Routes>
-                </main>
-                <Footer />
-              </div>
-            </BrowserRouter>
-          </ToastProvider>
-        </WishlistProvider>
-      </CartProvider>
-    </AuthProvider>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <ToastProvider>
+              <BrowserRouter>
+                <div className="min-h-screen bg-gray-50 flex flex-col">
+                  <Navbar />
+                  <main className="flex-1">
+                    <Routes>
+                      <Route path="/" element={<HomePage />} />
+                      <Route path="/products" element={<ProductsPage />} />
+                      <Route path="/product/:id" element={<ProductDetailPage />} />
+                      <Route path="/cart" element={<CartPage />} />
+                      <Route path="/checkout" element={<CheckoutPage />} />
+                      <Route path="/login" element={<AuthPage />} />
+                      <Route path="/register" element={<AuthPage />} />
+                      <Route path="/orders" element={<OrdersPage />} />
+                      <Route path="/profile" element={<ProfilePage />} />
+                      <Route path="/wishlist" element={<WishlistPage />} />
+                      <Route path="/men" element={<ProductsPage />} />
+                      <Route path="/women" element={<ProductsPage />} />
+                      <Route path="/electronics" element={<ProductsPage />} />
+                      <Route path="/sports" element={<ProductsPage />} />
+                      <Route path="/home" element={<ProductsPage />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </div>
+              </BrowserRouter>
+            </ToastProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
     </AppThemeProvider>
   )
 }
