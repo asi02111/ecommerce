@@ -7,7 +7,7 @@ const MainSlide = () => {
   const { slide, current, animating, goTo, next, prev, total } = useHeroSlider()
 
   return (
-    <Box sx={{ position: 'relative', flex: 1, minHeight: 340, borderRadius: 4, overflow: 'hidden' }}>
+    <Box sx={{ position: 'relative', flex: 1, minHeight: 670, borderRadius: 4, overflow: 'hidden' }}>
 
       {/* Background image */}
       <Box

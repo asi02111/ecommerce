@@ -25,7 +25,7 @@ const AuthPage = () => {
   }, [isLoggedIn, navigate])
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', display: 'flex', alignItems: 'center', py: 8 }}>
+    <Box sx={{  bgcolor: 'grey.50', display: 'flex', alignItems: 'center', py: 4 }}>
       <Container maxWidth="xs">
 
         {/* Logo */}
